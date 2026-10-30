@@ -196,19 +196,13 @@
       text-decoration: none;
       color: var(--ink);
       font-weight: 700;
-      font-size: 0.92rem;
-      letter-spacing: -0.02em;
+      font-size: 1.05rem;
+      letter-spacing: -0.025em;
+      transition: color 0.2s ease;
     }
 
-    .brand-pill {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      font-weight: 500;
-      padding: 3px 7px;
-      border-radius: 4px;
-      background: var(--teal-light);
+    .brand-mark:hover {
       color: var(--teal);
-      border: 1px solid color-mix(in srgb, var(--teal) 30%, transparent);
     }
 
     .nav-links {
@@ -293,26 +287,25 @@
     /* Ambient interactive oval that glides through the section */
     .section-motion-oval {
       position: absolute;
-      width: clamp(380px, 46vw, 680px);
-      height: clamp(200px, 26vw, 340px);
+      width: clamp(400px, 48vw, 720px);
+      height: clamp(220px, 28vw, 360px);
       border-radius: 50%;
       pointer-events: none;
       z-index: 0;
       opacity: 0;
-      left: 50%;
-      top: 25%;
-      transform: translate3d(-50%, -50%, 0) scale(0.85);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      top: 0;
+      left: 0;
+      transform: translate3d(0, 0, 0) translate(-50%, -50%) scale(0.9);
       background: radial-gradient(
         ellipse 65% 45% at center,
-        rgba(13, 148, 136, 0.16) 0%,
-        rgba(45, 212, 191, 0.09) 35%,
+        rgba(13, 148, 136, 0.18) 0%,
+        rgba(45, 212, 191, 0.10) 35%,
         rgba(59, 130, 246, 0.04) 60%,
         transparent 75%
       );
-      filter: blur(36px);
+      filter: blur(40px);
       mix-blend-mode: multiply;
-      will-change: transform, left, top, opacity;
+      will-change: transform, opacity;
     }
 
     [data-theme="dark"] .section-motion-oval {
@@ -1106,8 +1099,11 @@
       font-family: var(--sans);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
       opacity: 0;
-      transform: translate(-50%, -120%);
-      transition: opacity 0.15s ease, transform 0.15s ease;
+      top: 0;
+      left: 0;
+      transform: translate3d(0, 0, 0) translate(-50%, -100%);
+      transition: opacity 0.15s ease, transform 0.08s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
     }
 
     #chart-tooltip.is-active { opacity: 1; }
@@ -1153,7 +1149,6 @@
     <div class="wrap header-inner">
       <a href="#hero" class="brand-mark">
         <span>MetroPT-3</span>
-        <span class="brand-pill">Air Compressor Predictive Maintenance</span>
       </a>
       <nav class="nav-links" id="mainNav" aria-label="Main Navigation">
         <div class="nav-active-oval" id="navActiveOval" aria-hidden="true"></div>
@@ -2300,6 +2295,29 @@
     const navActiveOval = document.getElementById('navActiveOval');
     let currentActiveNavId = '';
 
+    // Per-section motion state for ultra-smooth physical Lerp interpolation
+    const sectionMotionStates = sections.map(sec => {
+      const oval = sec.querySelector('.section-motion-oval');
+      const rect = sec.getBoundingClientRect();
+      const initialX = rect.width ? rect.width * 0.5 : window.innerWidth * 0.5;
+      const initialY = rect.height ? rect.height * 0.25 : 200;
+      return {
+        sec,
+        oval,
+        currentX: initialX,
+        currentY: initialY,
+        targetX: initialX,
+        targetY: initialY,
+        currentScale: 0.9,
+        targetScale: 0.9,
+        currentOpacity: 0,
+        targetOpacity: 0,
+        isHovered: false,
+        lastScrollTargetX: initialX,
+        lastScrollTargetY: initialY
+      };
+    });
+
     function updateNavOval(targetLink) {
       if (!targetLink || !navActiveOval || !navEl) return;
       const linkRect = targetLink.getBoundingClientRect();
@@ -2317,29 +2335,34 @@
 
       let foundSection = null;
 
-      sections.forEach(sec => {
+      sectionMotionStates.forEach(state => {
+        const { sec, oval } = state;
+        if (!oval) return;
+
         const top = sec.offsetTop;
         const height = sec.offsetHeight;
-        const oval = sec.querySelector('.section-motion-oval');
+        const width = sec.offsetWidth || window.innerWidth;
 
         if (focusPoint >= top && focusPoint < top + height) {
           foundSection = sec;
           sec.classList.add('is-active-section');
+          state.targetOpacity = 0.95;
 
-          // Normalized progress through current section (0 to 1)
           const progress = Math.max(0, Math.min(1, (focusPoint - top) / height));
+          state.lastScrollTargetX = width * (0.5 + Math.sin(progress * Math.PI) * 0.22);
+          state.lastScrollTargetY = height * (0.15 + progress * 0.7);
 
-          if (oval && !sec.dataset.mouseActive) {
-            // Smoothly move the oval along a gentle sine trajectory down the section
-            const xPercent = 50 + Math.sin(progress * Math.PI) * 24;
-            const yPercent = 15 + progress * 70;
-            const scale = 0.88 + Math.sin(progress * Math.PI) * 0.28;
-            oval.style.left = `${xPercent}%`;
-            oval.style.top = `${yPercent}%`;
-            oval.style.transform = `translate(-50%, -50%) scale(${scale})`;
+          if (!state.isHovered) {
+            state.targetX = state.lastScrollTargetX;
+            state.targetY = state.lastScrollTargetY;
+            state.targetScale = 0.88 + Math.sin(progress * Math.PI) * 0.25;
           }
         } else {
           sec.classList.remove('is-active-section');
+          state.targetOpacity = 0;
+          if (!state.isHovered) {
+            state.targetScale = 0.82;
+          }
         }
       });
 
@@ -2370,6 +2393,58 @@
     }
     setTimeout(syncSectionOvalMotion, 150);
 
+    // Continuous 60fps/120fps RAF Lerp loop for liquid-smooth mouse and scroll motion
+    function animateOvalsLoop() {
+      sectionMotionStates.forEach(state => {
+        if (!state.oval) return;
+
+        // Smooth physical damping (lerp)
+        state.currentX += (state.targetX - state.currentX) * 0.075;
+        state.currentY += (state.targetY - state.currentY) * 0.075;
+        state.currentScale += (state.targetScale - state.currentScale) * 0.075;
+        state.currentOpacity += (state.targetOpacity - state.currentOpacity) * 0.08;
+
+        // Apply hardware-accelerated 3D transform without triggering layout reflow
+        state.oval.style.transform = `translate3d(${state.currentX}px, ${state.currentY}px, 0) translate(-50%, -50%) scale(${state.currentScale.toFixed(4)})`;
+        state.oval.style.opacity = state.currentOpacity.toFixed(3);
+      });
+
+      requestAnimationFrame(animateOvalsLoop);
+    }
+    requestAnimationFrame(animateOvalsLoop);
+
+    // Reactive mouse hover motion on sections - updates target only, Lerp does the smooth motion!
+    sectionMotionStates.forEach(state => {
+      const { sec } = state;
+      if (!sec) return;
+
+      let hoverTimeout = null;
+
+      sec.addEventListener('mousemove', (e) => {
+        state.isHovered = true;
+        state.targetOpacity = 1;
+        const rect = sec.getBoundingClientRect();
+        state.targetX = e.clientX - rect.left;
+        state.targetY = e.clientY - rect.top;
+        state.targetScale = 1.14;
+
+        clearTimeout(hoverTimeout);
+        hoverTimeout = setTimeout(() => {
+          state.isHovered = false;
+          state.targetX = state.lastScrollTargetX;
+          state.targetY = state.lastScrollTargetY;
+          state.targetScale = 0.95;
+        }, 1600);
+      }, { passive: true });
+
+      sec.addEventListener('mouseleave', () => {
+        state.isHovered = false;
+        state.targetX = state.lastScrollTargetX;
+        state.targetY = state.lastScrollTargetY;
+        state.targetScale = 0.85;
+      });
+    });
+
     // Nav hover interaction
     if (navEl && navActiveOval) {
       navLinks.forEach(link => {
@@ -2389,35 +2464,6 @@
         }
       });
     }
-
-    // Reactive mouse hover motion on sections
-    sections.forEach(sec => {
-      const oval = sec.querySelector('.section-motion-oval');
-      if (!oval) return;
-
-      let mouseResetTimer = null;
-      sec.addEventListener('mousemove', (e) => {
-        sec.dataset.mouseActive = 'true';
-        const rect = sec.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-
-        oval.style.left = `${mouseX}px`;
-        oval.style.top = `${mouseY}px`;
-        oval.style.opacity = '1';
-        oval.style.transform = `translate(-50%, -50%) scale(1.15)`;
-
-        clearTimeout(mouseResetTimer);
-        mouseResetTimer = setTimeout(() => {
-          sec.dataset.mouseActive = '';
-        }, 1400);
-      }, { passive: true });
-
-      sec.addEventListener('mouseleave', () => {
-        sec.dataset.mouseActive = '';
-        oval.style.transform = `translate(-50%, -50%) scale(0.85)`;
-      });
-    });
 
     // -------------------------------------------------------------
     // 3. NUMBER ANIMATION ENGINE
@@ -2485,8 +2531,7 @@
     function showTooltip(e, text) {
       tooltip.textContent = text;
       tooltip.classList.add('is-active');
-      tooltip.style.left = e.clientX + 'px';
-      tooltip.style.top = e.clientY + 'px';
+      tooltip.style.transform = `translate3d(${e.clientX}px, ${e.clientY - 12}px, 0) translate(-50%, -100%)`;
     }
     function hideTooltip() {
       tooltip.classList.remove('is-active');
