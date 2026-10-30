@@ -109,6 +109,8 @@
     .wrap {
       width: min(1200px, calc(100% - 48px));
       margin-inline: auto;
+      position: relative;
+      z-index: 2;
     }
 
     @media (max-width: 640px) {
@@ -210,24 +212,49 @@
     }
 
     .nav-links {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 6px;
+      padding: 4px 6px;
+      background: color-mix(in srgb, var(--panel) 75%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 999px;
     }
 
     .nav-links a {
+      position: relative;
+      z-index: 2;
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 500;
       color: var(--muted);
       cursor: pointer;
-      transition: color 0.2s ease;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: color 0.22s ease;
       white-space: nowrap;
     }
 
     .nav-links a:hover,
+    .nav-links a.active,
     .nav-links a:focus-visible {
       color: var(--ink);
+    }
+
+    .nav-active-oval {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      height: calc(100% - 8px);
+      border-radius: 999px;
+      background: var(--teal-light);
+      border: 1px solid color-mix(in srgb, var(--teal) 35%, transparent);
+      box-shadow: 0 2px 10px rgba(13, 148, 136, 0.12);
+      transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
     }
 
     .header-actions {
@@ -257,9 +284,63 @@
 
     /* Section Foundations */
     section {
-      padding: clamp(65px, 8vw, 110px) 0;
+      padding: clamp(70px, 9vw, 120px) 0;
       border-bottom: 1px solid var(--line);
       position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient interactive oval that glides through the section */
+    .section-motion-oval {
+      position: absolute;
+      width: clamp(380px, 46vw, 680px);
+      height: clamp(200px, 26vw, 340px);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      left: 50%;
+      top: 25%;
+      transform: translate3d(-50%, -50%, 0) scale(0.85);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      background: radial-gradient(
+        ellipse 65% 45% at center,
+        rgba(13, 148, 136, 0.16) 0%,
+        rgba(45, 212, 191, 0.09) 35%,
+        rgba(59, 130, 246, 0.04) 60%,
+        transparent 75%
+      );
+      filter: blur(36px);
+      mix-blend-mode: multiply;
+      will-change: transform, left, top, opacity;
+    }
+
+    [data-theme="dark"] .section-motion-oval {
+      background: radial-gradient(
+        ellipse 65% 45% at center,
+        rgba(45, 212, 191, 0.22) 0%,
+        rgba(14, 165, 233, 0.12) 35%,
+        rgba(99, 102, 241, 0.05) 60%,
+        transparent 75%
+      );
+      mix-blend-mode: screen;
+    }
+
+    .oval-pulse-aura {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1.5px solid color-mix(in srgb, var(--teal) 32%, transparent);
+      animation: ovalBreathe 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes ovalBreathe {
+      0% { transform: scale(0.92) rotate(0deg); opacity: 0.35; }
+      100% { transform: scale(1.08) rotate(5deg); opacity: 0.85; }
+    }
+
+    section.is-active-section .section-motion-oval {
+      opacity: 0.95;
     }
 
     .section-head {
@@ -684,20 +765,43 @@
     /* -------------------------------------------------------------
        SECTION 10: WHAT THIS GRAPH REFLECTS (EXPLANATORY CARDS)
        ------------------------------------------------------------- */
+    .figures-grid-layout {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(48px, 6vw, 76px) clamp(28px, 3.5vw, 42px);
+      margin-top: 40px;
+    }
+
+    @media (max-width: 960px) {
+      .figures-grid-layout {
+        grid-template-columns: 1fr;
+        gap: clamp(36px, 5vw, 48px);
+      }
+    }
+
     .figure-card {
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: clamp(20px, 3vw, 28px);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+      border-radius: 14px;
+      padding: clamp(24px, 3.5vw, 34px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+    }
+
+    .figure-card:hover {
+      border-color: color-mix(in srgb, var(--teal) 40%, var(--line));
+      box-shadow: 0 12px 32px rgba(13, 148, 136, 0.07), 0 2px 6px rgba(0, 0, 0, 0.04);
+      transform: translateY(-2px);
     }
 
     .figure-card.full-width {
       grid-column: 1 / -1;
+      margin-bottom: 8px;
     }
 
     .figure-card-header {
@@ -1051,15 +1155,16 @@
         <span>MetroPT-3</span>
         <span class="brand-pill">Air Compressor Predictive Maintenance</span>
       </a>
-      <nav class="nav-links" aria-label="Main Navigation">
-        <a href="#problem">Problem</a>
-        <a href="#dataset">Dataset</a>
-        <a href="#methodology">Methodology</a>
-        <a href="#benchmark">Benchmark</a>
-        <a href="#health-index">Health Index</a>
-        <a href="#explainability">Explainability</a>
-        <a href="#figures">Figures & Evidence</a>
-        <a href="#limitations">Limitations</a>
+      <nav class="nav-links" id="mainNav" aria-label="Main Navigation">
+        <div class="nav-active-oval" id="navActiveOval" aria-hidden="true"></div>
+        <a href="#problem" class="nav-item">Problem</a>
+        <a href="#dataset" class="nav-item">Dataset</a>
+        <a href="#methodology" class="nav-item">Methodology</a>
+        <a href="#benchmark" class="nav-item">Benchmark</a>
+        <a href="#figures" class="nav-item">Figures & Evidence</a>
+        <a href="#explainability" class="nav-item">Explainability</a>
+        <a href="#health-index" class="nav-item">Health Index</a>
+        <a href="#limitations" class="nav-item">Limitations</a>
       </nav>
       <div class="header-actions">
         <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle theme">Dark mode</button>
@@ -1073,6 +1178,7 @@
          SECTION 1: HERO
          ========================================================= -->
     <section class="hero-section" id="hero">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <!-- Full-bleed background graph animation -->
       <div class="hero-bg-graph" aria-hidden="true">
         <svg viewBox="0 0 1440 700" preserveAspectRatio="none">
@@ -1165,6 +1271,7 @@
          SECTION 2: PROBLEM STATEMENT & SEQUENCE
          ========================================================= -->
     <section id="problem">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">Problem Statement</span>
@@ -1192,7 +1299,7 @@
             <div class="sequence-step-box step-warning">
               <span class="sequence-step-num">PHASE 03</span>
               <strong class="sequence-step-title" style="color:var(--teal);">Warning</strong>
-              <p class="sequence-step-desc">Persistent anomaly across consecutive samples ($P = 3$) flags early warning.</p>
+              <p class="sequence-step-desc">Persistent anomaly across consecutive samples (P = 3) flags early warning.</p>
             </div>
             <div class="sequence-step-box step-failure">
               <span class="sequence-step-num">PHASE 04</span>
@@ -1226,7 +1333,7 @@
           </div>
           <div class="objective-item">
             <span class="objective-check">✓</span>
-            <span><strong>Suppress False Alarms:</strong> Apply temporal persistence filtering ($P = 3$) to eliminate transient isolated alerts.</span>
+            <span><strong>Suppress False Alarms:</strong> Apply temporal persistence filtering (P = 3) to eliminate transient isolated alerts.</span>
           </div>
           <div class="objective-item">
             <span class="objective-check">✓</span>
@@ -1240,6 +1347,7 @@
          SECTION 3: DATASET & SENSORS
          ========================================================= -->
     <section id="dataset">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">Dataset Foundations</span>
@@ -1389,6 +1497,7 @@
          SECTION 4: METHODOLOGY PIPELINE
          ========================================================= -->
     <section id="methodology">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">Research Workflow</span>
@@ -1413,7 +1522,7 @@
           <div class="pipeline-step-card">
             <span class="eyebrow-tag">Stage 03</span>
             <b>Chronological Splitting</b>
-            <p>Partitioned data strictly by time (Train $\to$ Val $\to$ Test). Zero random shuffling to prevent future leakage.</p>
+            <p>Partitioned data strictly by time (Train &rarr; Val &rarr; Test). Zero random shuffling to prevent future leakage.</p>
           </div>
           <div class="pipeline-step-card">
             <span class="eyebrow-tag">Stage 04</span>
@@ -1433,7 +1542,7 @@
           <div class="pipeline-step-card">
             <span class="eyebrow-tag">Stage 07</span>
             <b>Persistence Filtering</b>
-            <p>Introduced a 3-observation ($P = 3$, $\sim 30\text{ s}$) filter to eliminate transient false alarms while preserving lead time.</p>
+            <p>Introduced a 3-observation (P = 3, ~30 s) filter to eliminate transient false alarms while preserving lead time.</p>
           </div>
           <div class="pipeline-step-card">
             <span class="eyebrow-tag">Stage 08</span>
@@ -1448,6 +1557,7 @@
          SECTION 5 & 6: MODEL BENCHMARK & MASTER TABLE
          ========================================================= -->
     <section id="benchmark">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">Model Benchmarking</span>
@@ -1455,7 +1565,7 @@
         </div>
 
         <p class="serif-body motion-reveal" style="margin-bottom:20px;">
-          We evaluated 12 raw and sequence-based model configurations under chronological validation and held-out prospective testing. Because the test dataset is severely imbalanced with a positive-class prevalence of approximately <strong>0.0611%</strong> ($\sim 0.000611$), Average Precision (AP) is the primary metric:
+          We evaluated 12 raw and sequence-based model configurations under chronological validation and held-out prospective testing. Because the test dataset is severely imbalanced with a positive-class prevalence of approximately <strong>0.0611%</strong> (~0.000611), Average Precision (AP) is the primary metric:
         </p>
 
         <!-- Accuracy Warning Box -->
@@ -1606,6 +1716,7 @@
          SECTION 10: RECONSTRUCTED RESEARCH FIGURES (WITH "WHAT THIS REFLECTS")
          ========================================================= -->
     <section id="figures">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">Evidence & Analysis</span>
@@ -1623,7 +1734,7 @@
             <div class="figure-card-header">
               <div>
                 <h3>Generalization Gap Across Model Families</h3>
-                <p>Drop in Average Precision from Validation (Event 3) to Held-Out Test (Event 4): $AP_{val} - AP_{test}$</p>
+                <p>Drop in Average Precision from Validation (Event 3) to Held-Out Test (Event 4): AP<sub>val</sub> &minus; AP<sub>test</sub></p>
               </div>
               <span class="figure-index-badge">FIG 01 / AP GAP</span>
             </div>
@@ -1652,7 +1763,7 @@
             
             <div class="graph-reflection-drawer">
               <strong>What this graph reflects:</strong>
-              Directly compares Average Precision achieved during validation (Event 3, teal bars) with the prospective test period (Event 4, red bars). The horizontal dashed line marks the positive-class prevalence baseline ($\sim 0.000611$).
+              Directly compares Average Precision achieved during validation (Event 3, teal bars) with the prospective test period (Event 4, red bars). The horizontal dashed line marks the positive-class prevalence baseline (~0.000611).
               <ul class="graph-takeaways-list">
                 <li><strong>Validation Trap:</strong> Strong validation performance failed to transfer to Event 4; most supervised models collapsed to or below the chance baseline.</li>
                 <li><strong>Unsupervised Advantage:</strong> Unsupervised models (Isolation Forest, Autoencoders) retained positive test margins because they evaluate deviation from healthy normality rather than overfitting to specific historical failure signatures.</li>
@@ -1665,7 +1776,7 @@
             <div class="figure-card-header">
               <div>
                 <h3>Healthy-Period False-Alarm Burden by Model (Logarithmic Scale)</h3>
-                <p>Comparing instantaneous thresholding ($P = 1$) vs 3-sample persistence filter ($P = 3$)</p>
+                <p>Comparing instantaneous thresholding (P = 1) vs 3-sample persistence filter (P = 3)</p>
               </div>
               <span class="figure-index-badge">FIG 03 / LOG BURDEN</span>
             </div>
@@ -1673,10 +1784,10 @@
             
             <div class="graph-reflection-drawer">
               <strong>What this graph reflects:</strong>
-              Compares the number of distinct false-alarm episodes generated during healthy test operations under instantaneous alerting ($P = 1$, red bars) versus a 3-consecutive-sample requirement ($P = 3$, teal bars) plotted on a logarithmic scale ($10^0$ to $10^4$).
+              Compares the number of distinct false-alarm episodes generated during healthy test operations under instantaneous alerting (P = 1, red bars) versus a 3-consecutive-sample requirement (P = 3, teal bars) plotted on a logarithmic scale (10⁰ to 10⁴).
               <ul class="graph-takeaways-list">
-                <li><strong>Order-of-Magnitude Suppression:</strong> At $P = 1$, isolated sensor spikes trigger thousands of false alarms. Requiring 3 consecutive abnormal observations ($\sim 30\text{ s}$) reduces false-alarm episodes by orders of magnitude across virtually all architectures.</li>
-                <li><strong>The Persistence Trade-Off:</strong> Persistence significantly improves alarm stability, but if set too high ($P \ge 10$), it can delay alarms or completely miss valid failure events.</li>
+                <li><strong>Order-of-Magnitude Suppression:</strong> At P = 1, isolated sensor spikes trigger thousands of false alarms. Requiring 3 consecutive abnormal observations (~30 s) reduces false-alarm episodes by orders of magnitude across virtually all architectures.</li>
+                <li><strong>The Persistence Trade-Off:</strong> Persistence significantly improves alarm stability, but if set too high (P &ge; 10), it can delay alarms or completely miss valid failure events.</li>
               </ul>
             </div>
           </div>
@@ -1706,7 +1817,7 @@
           <div class="figure-card motion-reveal">
             <div class="figure-card-header">
               <div>
-                <h3>Net Attribution Shift ($Test - Val$)</h3>
+                <h3>Net Attribution Shift (Test &minus; Val)</h3>
                 <p>Displacement in model feature reliance between failure events</p>
               </div>
               <span class="figure-index-badge">FIG 05 / SHIFT</span>
@@ -1715,7 +1826,7 @@
             
             <div class="graph-reflection-drawer">
               <strong>What this graph reflects:</strong>
-              Net shift in mean absolute SHAP between splits ($Test - Validation$).
+              Net shift in mean absolute SHAP between splits (Test &minus; Validation).
               <ul class="graph-takeaways-list">
                 <li><strong>Caudal Flow Surge:</strong> <code>Caudal_impulses</code> shows the single largest positive increase (<strong>+36.87</strong>), surging from 24.61 to 61.47 as airflow fluctuations became the primary anomaly indicator in Event 4.</li>
                 <li><strong>Operational Regime Change:</strong> Proves that the model's learned feature relationships dynamically adapted under a different mechanical failure mode.</li>
@@ -1728,7 +1839,7 @@
             <div class="figure-card-header">
               <div>
                 <h3>False-Alarm Episodes Suppressed by Persistence</h3>
-                <p>Healthy test telemetry: instant alert ($P = 1$) vs 3 consecutive observations ($P = 3$)</p>
+                <p>Healthy test telemetry: instant alert (P = 1) vs 3 consecutive observations (P = 3)</p>
               </div>
               <span class="figure-index-badge">FIG 06 / EPISODES</span>
             </div>
@@ -1736,7 +1847,7 @@
             
             <div class="graph-reflection-drawer">
               <strong>What this graph reflects:</strong>
-              Demonstrates episode reduction across representative models when switching from $P = 1$ to $P = 3$. The proposed Hierarchical Robust HI reduces healthy episodes from <strong>420 down to 45</strong> (or 441 to 301 in the broader test evaluation scope), suppressing transient noise.
+              Demonstrates episode reduction across representative models when switching from P = 1 to P = 3. The proposed Hierarchical Robust HI reduces healthy episodes from <strong>420 down to 45</strong> (or 441 to 301 in the broader test evaluation scope), suppressing transient noise.
             </div>
           </div>
 
@@ -1778,7 +1889,7 @@
             <div class="figure-card-header">
               <div>
                 <h3>Persistence Filter Dynamics</h3>
-                <p>Lead time vs false-warning trade-off ($P = 1$ to $10$)</p>
+                <p>Lead time vs false-warning trade-off (P = 1 to 10)</p>
               </div>
               <span class="figure-index-badge">FIG 09 / FILTER</span>
             </div>
@@ -1786,7 +1897,7 @@
             
             <div class="graph-reflection-drawer">
               <strong>What this reflects:</strong>
-              $P = 1$ gives 16.78 h lead but high FWR (0.804%). $P = 3$ achieves the optimal operational compromise: <strong>15.84 h lead with 0.459% FWR</strong>. $P = 10$ completely misses Event 4.
+              P = 1 gives 16.78 h lead but high FWR (0.804%). P = 3 achieves the optimal operational compromise: <strong>15.84 h lead with 0.459% FWR</strong>. P = 10 completely misses Event 4.
             </div>
           </div>
 
@@ -1795,7 +1906,7 @@
             <div class="figure-card-header">
               <div>
                 <h3>Calibration Threshold Sensitivity</h3>
-                <p>Warning performance across quantiles $Q_{90}$ to $Q_{99.9}$</p>
+                <p>Warning performance across quantiles Q<sub>90</sub> to Q<sub>99.9</sub></p>
               </div>
               <span class="figure-index-badge">FIG 10 / THRESHOLDS</span>
             </div>
@@ -1803,7 +1914,7 @@
             
             <div class="graph-reflection-drawer">
               <strong>What this reflects:</strong>
-              Lead time remains broadly stable at 15.84 h across $Q_{97.5} - Q_{99.5}$. Overly conservative thresholding at $Q_{99.9}$ causes the system to miss Event 4 entirely.
+              Lead time remains broadly stable at 15.84 h across Q<sub>97.5</sub> &minus; Q<sub>99.5</sub>. Overly conservative thresholding at Q<sub>99.9</sub> causes the system to miss Event 4 entirely.
             </div>
           </div>
 
@@ -1815,6 +1926,7 @@
          SECTION 11: STATISTICAL FEATURE DISTRIBUTION SHIFT
          ========================================================= -->
     <section id="explainability">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">Distribution Shift Analysis</span>
@@ -1902,6 +2014,7 @@
          SECTION 12: THE HEALTH INDEX FORMULATION
          ========================================================= -->
     <section id="health-index">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">The Core Contribution</span>
@@ -1909,16 +2022,16 @@
         </div>
 
         <p class="serif-body motion-reveal" style="margin-bottom:28px;">
-          The proposed hierarchical Health Index combines 5 sensor-derived anomaly components into one continuous score. It calculates 60-second rolling windows conditioned on operating state changes (>30-second gaps define segment boundaries to prevent cross-state contamination), logarithmically scales against healthy $q_{95,i}$ references, and triggers an alert when $HI(t) > Q_{99} = 0.644372$ persists across $P = 3$ observations:
+          The proposed hierarchical Health Index combines 5 sensor-derived anomaly components into one continuous score. It calculates 60-second rolling windows conditioned on operating state changes (>30-second gaps define segment boundaries to prevent cross-state contamination), logarithmically scales against healthy q<sub>95,i</sub> references, and triggers an alert when HI(t) > Q<sub>99</sub> = 0.644372 persists across P = 3 observations:
         </p>
 
         <!-- KaTeX Formula Card -->
         <div class="formula-display-card motion-reveal">
           <span class="eyebrow-tag">Mathematical Formulation</span>
           <div class="katex-rendered" id="katexFormulaBlock">
-            $$HI(t) = \frac{1}{5} \sum_{k=1}^{5} \ln\left(1 + \frac{F_k(t)}{Q^{train}_{95,k}}\right)$$
+            <span style="font-family:var(--serif); font-size:1.22rem; font-style:italic;">HI(t) = <span style="font-style:normal;">&frac15;</span> &sum;<sub>k=1..5</sub> ln(1 + F<sub>k</sub>(t) / Q<sup>train</sup><sub>95,k</sub>)</span>
           </div>
-          <p class="formula-meta">Where $F_k(t)$ is the component anomaly score, $Q^{train}_{95,k}$ is its healthy calibration reference, and all 5 components are equally weighted.</p>
+          <p class="formula-meta">Where F<sub>k</sub>(t) is the component anomaly score, Q<sup>train</sup><sub>95,k</sub> is its healthy calibration reference, and all 5 components are equally weighted.</p>
         </div>
 
         <!-- Persistence Scrubber Demo -->
@@ -1926,7 +2039,7 @@
           <div class="scrubber-header">
             <div>
               <h3>Interactive Persistence Sensitivity (Event 4)</h3>
-              <p style="font-size:0.78rem; color:var(--muted);">Adjust consecutive sample filter $P$ to inspect the live trade-off</p>
+              <p style="font-size:0.78rem; color:var(--muted);">Adjust consecutive sample filter P to inspect the live trade-off</p>
             </div>
             <div class="p-badge" id="pBadgeDisplay">P = 3</div>
           </div>
@@ -1964,6 +2077,7 @@
          SECTION 13: CORE RESEARCH INSIGHTS
          ========================================================= -->
     <section id="insights">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="section-head motion-reveal">
           <span class="eyebrow-tag">Final Research Findings</span>
@@ -1984,7 +2098,7 @@
           <div class="insight-card">
             <span class="eyebrow-tag">Insight 03</span>
             <h4>Persistence Suppresses Alarm Burden</h4>
-            <p>Requiring anomalies to persist across 3 consecutive samples ($\sim 30\text{ s}$) cuts false alarms by orders of magnitude.</p>
+            <p>Requiring anomalies to persist across 3 consecutive samples (~30 s) cuts false alarms by orders of magnitude.</p>
           </div>
           <div class="insight-card">
             <span class="eyebrow-tag">Insight 04</span>
@@ -1999,6 +2113,7 @@
          SECTION 14: LIMITATIONS & FUTURE WORK
          ========================================================= -->
     <section id="limitations">
+      <div class="section-motion-oval" aria-hidden="true"><div class="oval-pulse-aura"></div></div>
       <div class="wrap">
         <div class="limitations-boundary-card motion-reveal">
           <h3>
@@ -2175,6 +2290,134 @@
       const progress = totalScroll > 0 ? window.scrollY / totalScroll : 0;
       scrollProgressBar.style.transform = `scaleX(${progress})`;
     }, { passive: true });
+
+    // -------------------------------------------------------------
+    // 2B. SECTION MOTION OVAL & SLIDING NAV OVAL ENGINE
+    // -------------------------------------------------------------
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    const navEl = document.getElementById('mainNav');
+    const navLinks = Array.from(document.querySelectorAll('.nav-links a.nav-item'));
+    const navActiveOval = document.getElementById('navActiveOval');
+    let currentActiveNavId = '';
+
+    function updateNavOval(targetLink) {
+      if (!targetLink || !navActiveOval || !navEl) return;
+      const linkRect = targetLink.getBoundingClientRect();
+      const navRect = navEl.getBoundingClientRect();
+      const leftOffset = linkRect.left - navRect.left;
+      navActiveOval.style.width = `${linkRect.width}px`;
+      navActiveOval.style.transform = `translateX(${leftOffset}px)`;
+      navActiveOval.style.opacity = '1';
+    }
+
+    function syncSectionOvalMotion() {
+      const scrollY = window.scrollY;
+      const vh = window.innerHeight;
+      const focusPoint = scrollY + vh * 0.42;
+
+      let foundSection = null;
+
+      sections.forEach(sec => {
+        const top = sec.offsetTop;
+        const height = sec.offsetHeight;
+        const oval = sec.querySelector('.section-motion-oval');
+
+        if (focusPoint >= top && focusPoint < top + height) {
+          foundSection = sec;
+          sec.classList.add('is-active-section');
+
+          // Normalized progress through current section (0 to 1)
+          const progress = Math.max(0, Math.min(1, (focusPoint - top) / height));
+
+          if (oval && !sec.dataset.mouseActive) {
+            // Smoothly move the oval along a gentle sine trajectory down the section
+            const xPercent = 50 + Math.sin(progress * Math.PI) * 24;
+            const yPercent = 15 + progress * 70;
+            const scale = 0.88 + Math.sin(progress * Math.PI) * 0.28;
+            oval.style.left = `${xPercent}%`;
+            oval.style.top = `${yPercent}%`;
+            oval.style.transform = `translate(-50%, -50%) scale(${scale})`;
+          }
+        } else {
+          sec.classList.remove('is-active-section');
+        }
+      });
+
+      // Update header nav oval pill
+      if (foundSection) {
+        const secId = foundSection.getAttribute('id');
+        if (secId !== currentActiveNavId) {
+          currentActiveNavId = secId;
+          const matchedLink = document.querySelector(`.nav-links a[href="#${secId}"]`);
+          if (matchedLink) {
+            navLinks.forEach(l => l.classList.remove('active'));
+            matchedLink.classList.add('active');
+            if (!navEl.dataset.isHovered) {
+              updateNavOval(matchedLink);
+            }
+          } else {
+            navLinks.forEach(l => l.classList.remove('active'));
+            if (navActiveOval) navActiveOval.style.opacity = '0';
+          }
+        }
+      }
+    }
+
+    // Connect to scroll and Lenis
+    window.addEventListener('scroll', syncSectionOvalMotion, { passive: true });
+    if (lenisInstance) {
+      lenisInstance.on('scroll', syncSectionOvalMotion);
+    }
+    setTimeout(syncSectionOvalMotion, 150);
+
+    // Nav hover interaction
+    if (navEl && navActiveOval) {
+      navLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          navEl.dataset.isHovered = 'true';
+          updateNavOval(link);
+        });
+      });
+
+      navEl.addEventListener('mouseleave', () => {
+        navEl.dataset.isHovered = '';
+        const currentActiveLink = document.querySelector('.nav-links a.active');
+        if (currentActiveLink) {
+          updateNavOval(currentActiveLink);
+        } else {
+          navActiveOval.style.opacity = '0';
+        }
+      });
+    }
+
+    // Reactive mouse hover motion on sections
+    sections.forEach(sec => {
+      const oval = sec.querySelector('.section-motion-oval');
+      if (!oval) return;
+
+      let mouseResetTimer = null;
+      sec.addEventListener('mousemove', (e) => {
+        sec.dataset.mouseActive = 'true';
+        const rect = sec.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        oval.style.left = `${mouseX}px`;
+        oval.style.top = `${mouseY}px`;
+        oval.style.opacity = '1';
+        oval.style.transform = `translate(-50%, -50%) scale(1.15)`;
+
+        clearTimeout(mouseResetTimer);
+        mouseResetTimer = setTimeout(() => {
+          sec.dataset.mouseActive = '';
+        }, 1400);
+      }, { passive: true });
+
+      sec.addEventListener('mouseleave', () => {
+        sec.dataset.mouseActive = '';
+        oval.style.transform = `translate(-50%, -50%) scale(0.85)`;
+      });
+    });
 
     // -------------------------------------------------------------
     // 3. NUMBER ANIMATION ENGINE
