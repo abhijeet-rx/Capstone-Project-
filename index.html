@@ -295,7 +295,7 @@
        SECTION 1: HERO
        ------------------------------------------------------------- */
     .hero-section {
-      padding: clamp(60px, 9vh, 100px) 0 clamp(65px, 9vh, 110px);
+      padding: clamp(70px, 10vh, 120px) 0 clamp(80px, 12vh, 130px);
       min-height: calc(100vh - 64px);
       display: flex;
       align-items: center;
@@ -304,25 +304,66 @@
       background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg-subtle) 65%, var(--bg)) 100%);
     }
 
-    .hero-grid-canvas {
+    /* Immersive full-bleed animated background graph */
+    .hero-bg-graph {
       position: absolute;
       inset: 0;
-      pointer-events: none;
-      opacity: 0.85;
-    }
-
-    .hero-grid-canvas svg {
       width: 100%;
       height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-bg-graph svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-wave-primary {
+      stroke-dasharray: 2200;
+      stroke-dashoffset: 2200;
+      animation: hero-wave-draw 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.15s;
+    }
+
+    @keyframes hero-wave-draw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .hero-wave-fill {
+      opacity: 0;
+      animation: hero-fill-fade 1.6s ease-out forwards 1.2s;
+    }
+
+    @keyframes hero-fill-fade {
+      to {
+        opacity: 1;
+      }
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
-      display: grid;
-      grid-template-columns: 1.25fr 0.95fr;
-      gap: clamp(32px, 5vw, 64px);
-      align-items: center;
+      max-width: 940px;
+    }
+
+    .hero-signal-tag {
+      position: absolute;
+      bottom: 22px;
+      right: 28px;
+      z-index: 2;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--panel) 85%, transparent);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .hero-text h1 {
@@ -344,7 +385,7 @@
       font-size: clamp(1.15rem, 1.45vw, 1.3rem);
       line-height: 1.6;
       color: var(--ink-secondary);
-      max-width: 54ch;
+      max-width: 60ch;
       margin-bottom: 24px;
     }
 
@@ -380,9 +421,9 @@
     .hero-stats-row {
       display: flex;
       flex-wrap: wrap;
-      gap: clamp(24px, 4vw, 44px);
-      margin-top: 10px;
-      padding-top: 22px;
+      gap: clamp(24px, 4vw, 48px);
+      margin-top: 14px;
+      padding-top: 24px;
       border-top: 1px solid var(--line);
     }
 
@@ -396,74 +437,6 @@
 
     .hero-stat-item span {
       font-size: 0.76rem;
-      color: var(--muted);
-    }
-
-    .hero-scope-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-      position: relative;
-    }
-
-    .scope-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
-
-    .scope-status {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-weight: 600;
-      color: var(--alarm);
-    }
-
-    .scope-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--alarm);
-    }
-
-    .scope-svg-wrap {
-      width: 100%;
-      height: 250px;
-      position: relative;
-      background: var(--bg-subtle);
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      overflow: hidden;
-    }
-
-    .scope-svg-wrap svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .trace-path {
-      stroke-dasharray: 1400;
-      stroke-dashoffset: 1400;
-      animation: trace-sweep 3.2s cubic-bezier(0.2, 0.8, 0.25, 1) forwards 0.2s;
-    }
-
-    @keyframes trace-sweep {
-      to { stroke-dashoffset: 0; }
-    }
-
-    .scope-footer-caption {
-      margin-top: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.73rem;
       color: var(--muted);
     }
 
@@ -1100,14 +1073,58 @@
          SECTION 1: HERO
          ========================================================= -->
     <section class="hero-section" id="hero">
-      <div class="hero-grid-canvas" aria-hidden="true">
-        <svg viewBox="0 0 1200 800" preserveAspectRatio="none">
+      <!-- Full-bleed background graph animation -->
+      <div class="hero-bg-graph" aria-hidden="true">
+        <svg viewBox="0 0 1440 700" preserveAspectRatio="none">
           <defs>
             <pattern id="millimeterGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--line)" stroke-width="0.8" />
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--line)" stroke-width="0.7" opacity="0.65" />
             </pattern>
+            <linearGradient id="heroWaveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="var(--teal)" stop-opacity="0.14" />
+              <stop offset="50%" stop-color="var(--teal)" stop-opacity="0.04" />
+              <stop offset="100%" stop-color="var(--teal)" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="heroLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="var(--teal)" />
+              <stop offset="68%" stop-color="var(--teal)" />
+              <stop offset="78%" stop-color="var(--alarm)" />
+              <stop offset="100%" stop-color="var(--alarm)" />
+            </linearGradient>
           </defs>
+
+          <!-- Precision Engineering Millimeter Grid -->
           <rect width="100%" height="100%" fill="url(#millimeterGrid)" />
+
+          <!-- Background Reticle Lines -->
+          <line x1="0" y1="520" x2="1440" y2="520" stroke="var(--line)" stroke-dasharray="4 6" opacity="0.6" />
+          <line x1="0" y1="400" x2="1440" y2="400" stroke="var(--line)" stroke-dasharray="4 6" opacity="0.6" />
+          
+          <!-- Q99 Alarm Threshold Line -->
+          <line x1="0" y1="260" x2="1440" y2="260" stroke="var(--alarm)" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.75" />
+          <text x="1410" y="248" text-anchor="end" fill="var(--alarm)" font-family="var(--mono)" font-size="12" font-weight="600" letter-spacing="0.04em">Q99 = 0.644372 (ALARM THRESHOLD)</text>
+
+          <!-- Ambient Harmonic Secondary Wave -->
+          <path d="M 0 550 C 220 530, 380 570, 560 540 S 800 520, 960 480 S 1180 370, 1320 280 S 1390 190, 1440 140" 
+                fill="none" stroke="var(--teal)" stroke-width="1.5" stroke-opacity="0.22" stroke-dasharray="4 4" />
+
+          <!-- Gradient Area Under Primary Wave -->
+          <path class="hero-wave-fill" d="M 0 520 C 180 500, 320 545, 500 515 S 750 495, 920 445 S 1120 310, 1260 215 S 1360 140, 1440 90 L 1440 700 L 0 700 Z" 
+                fill="url(#heroWaveGradient)" />
+
+          <!-- Primary Flowing Telemetry Curve -->
+          <path class="hero-wave-primary" d="M 0 520 C 180 500, 320 545, 500 515 S 750 495, 920 445 S 1120 310, 1260 215 S 1360 140, 1440 90" 
+                fill="none" stroke="url(#heroLineGrad)" stroke-width="3.5" stroke-linecap="round" />
+
+          <!-- Glowing Pulse Beacon at Q99 Breach Point -->
+          <g transform="translate(1200, 260)">
+            <circle r="6" fill="var(--alarm)" />
+            <circle r="14" fill="none" stroke="var(--alarm)" stroke-width="1.5" opacity="0.7">
+              <animate attributeName="r" values="6;24;6" dur="2.4s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.8;0;0.8" dur="2.4s" repeatCount="indefinite" />
+            </circle>
+            <text x="18" y="5" fill="var(--alarm)" font-family="var(--mono)" font-size="11" font-weight="700">15.84 h EARLY WARNING</text>
+          </g>
         </svg>
       </div>
 
@@ -1139,36 +1156,9 @@
             </div>
           </div>
         </div>
-
-        <!-- Hero Oscilloscope -->
-        <div class="hero-scope-card motion-reveal">
-          <div class="scope-header">
-            <span>REAL-TIME SENSOR OSCILLOSCOPE TRACE</span>
-            <div class="scope-status">
-              <span class="scope-status-dot"></span>
-              <span>Q99 THRESHOLD BREACH</span>
-            </div>
-          </div>
-
-          <div class="scope-svg-wrap">
-            <svg viewBox="0 0 600 250" preserveAspectRatio="none" role="img" aria-label="Illustrative oscilloscope signal line drifting upward and breaching the Q99 warning threshold">
-              <line x1="0" y1="62" x2="600" y2="62" stroke="var(--line)" stroke-dasharray="3 3" />
-              <line x1="0" y1="125" x2="600" y2="125" stroke="var(--line)" stroke-dasharray="3 3" />
-              <line x1="0" y1="187" x2="600" y2="187" stroke="var(--line)" stroke-dasharray="3 3" />
-              
-              <line x1="0" y1="95" x2="600" y2="95" stroke="var(--alarm)" stroke-width="1.5" stroke-dasharray="6 6" />
-              <text x="585" y="85" text-anchor="end" fill="var(--alarm)" font-family="var(--mono)" font-size="11" font-weight="600">Q99 = 0.644372</text>
-
-              <path class="trace-path" d="M 0 185 C 40 175, 70 195, 110 180 S 170 170, 210 182 S 270 188, 310 170 S 370 150, 410 120 S 470 100, 510 65 S 560 40, 600 25" fill="none" stroke="var(--teal)" stroke-width="3" stroke-linecap="round" />
-            </svg>
-          </div>
-
-          <div class="scope-footer-caption">
-            <span class="eyebrow-tag" style="font-size:0.68rem;">illustrative signal trace</span>
-            <span>Empirical Event 4 evaluation below</span>
-          </div>
-        </div>
       </div>
+
+      <span class="hero-signal-tag">illustrative telemetry trace · empirical Event 4 evaluation below</span>
     </section>
 
     <!-- =========================================================
