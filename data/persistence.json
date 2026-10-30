@@ -1,0 +1,47 @@
+{
+  "event_4_sensitivity": [
+    {
+      "p": 1,
+      "lead_hours": 16.78,
+      "fwr_percent": 0.804,
+      "note": "Earliest warning, but highest false-alarm burden."
+    },
+    {
+      "p": 2,
+      "lead_hours": 16.77,
+      "fwr_percent": 0.613,
+      "note": "Maintains nearly full lead time with fewer false alarms."
+    },
+    {
+      "p": 3,
+      "lead_hours": 15.84,
+      "fwr_percent": 0.4587,
+      "fwr_percent_approx": 0.459,
+      "is_chosen": true,
+      "note": "Chosen operating point (not universal): balances generous 15.84 h warning with 0.459% false-warning rate."
+    },
+    {
+      "p": 5,
+      "lead_hours": 13.09,
+      "fwr_percent": 0.213,
+      "note": "Substantially cuts false alarms, but drops advance warning by 2.75 hours."
+    },
+    {
+      "p": 10,
+      "lead_hours": null,
+      "fwr_percent": null,
+      "detected": false,
+      "note": "Not detected: overly aggressive persistence filter completely suppresses the valid failure warning."
+    }
+  ],
+  "robustness": {
+    "lead_stability_range": "Q97.5 to Q99.5",
+    "extreme_miss": "Q99.9 completely misses Event 4",
+    "ablation_oil_temperature": {
+      "effect": "Lead drops from 15.84 h to approximately 10.83 h without Oil_temperature rolling mean"
+    },
+    "ablation_motor_current_std": {
+      "effect": "False-warning rate rises from 0.459% to approximately 3.406% without Motor_current rolling std"
+    }
+  }
+}

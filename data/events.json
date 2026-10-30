@@ -1,0 +1,32 @@
+{
+  "threshold": {
+    "quantile": "Q99",
+    "value": 0.644372,
+    "persistence_P": 3,
+    "approx_time_seconds": 30
+  },
+  "event_3": {
+    "name": "Event 3 (Validation)",
+    "role": "Validation threshold & workflow selection",
+    "onset": "2020-06-05 10:00",
+    "first_warning": "2020-06-04 10:15:19",
+    "lead_minutes": 1424.7,
+    "lead_hours": 23.75,
+    "false_warning_rate_percent": 0.5752,
+    "flagged_healthy_samples": 255,
+    "total_healthy_samples": 44331,
+    "alarm_episodes": 12
+  },
+  "event_4": {
+    "name": "Event 4 (Held-Out Prospective Test)",
+    "role": "Held-out future prospective evaluation",
+    "onset": "2020-07-15 14:30",
+    "first_warning": "2020-07-14 22:39:28",
+    "lead_minutes": 950.5,
+    "lead_hours": 15.84,
+    "false_warning_rate_percent": 0.4587,
+    "flagged_healthy_samples": 1056,
+    "total_healthy_samples": 230192,
+    "alarm_episodes": 48
+  }
+}

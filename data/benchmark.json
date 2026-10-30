@@ -1,0 +1,91 @@
+{
+  "test_prevalence_baseline": 0.000611,
+  "models": [
+    {
+      "name": "Isolation Forest",
+      "test_ap_ratio": 4.75,
+      "test_ap": 0.002902,
+      "test_roc_auc": 0.8944,
+      "val_ap": 0.013034,
+      "note": "Best ranking score (4.75x prevalence), but produced no qualifying persistent warning at evaluated threshold"
+    },
+    {
+      "name": "Stacked AE",
+      "test_ap_ratio": 2.03,
+      "test_ap": 0.001238,
+      "test_roc_auc": 0.7587,
+      "val_ap": 0.011198
+    },
+    {
+      "name": "Autoencoder",
+      "test_ap_ratio": 1.65,
+      "test_ap": 0.001009,
+      "test_roc_auc": 0.7131,
+      "val_ap": 0.010503
+    },
+    {
+      "name": "Logistic Regression",
+      "test_ap_ratio": 1.21,
+      "test_ap": 0.000742,
+      "test_roc_auc": 0.4951,
+      "val_ap": 0.089931
+    },
+    {
+      "name": "Linear SVM",
+      "test_ap_ratio": 1.18,
+      "test_ap": 0.000723,
+      "test_roc_auc": 0.5462,
+      "val_ap": 0.027989
+    },
+    {
+      "name": "Extra Trees",
+      "test_ap_ratio": 0.74,
+      "test_ap": 0.000453,
+      "test_roc_auc": 0.3753,
+      "val_ap": 0.107630
+    },
+    {
+      "name": "1D-CNN (L=10)",
+      "test_ap_ratio": 0.72,
+      "test_ap": 0.000442,
+      "test_roc_auc": 0.3623,
+      "val_ap": 0.056820
+    },
+    {
+      "name": "LSTM (L=10)",
+      "test_ap_ratio": 0.71,
+      "test_ap": 0.000432,
+      "test_roc_auc": 0.2763,
+      "val_ap": 0.054687
+    },
+    {
+      "name": "LightGBM",
+      "test_ap_ratio": 0.64,
+      "test_ap": 0.000392,
+      "test_roc_auc": 0.2081,
+      "val_ap": 0.027180
+    },
+    {
+      "name": "Random Forest",
+      "test_ap_ratio": 0.63,
+      "test_ap": 0.000385,
+      "test_roc_auc": 0.2187,
+      "val_ap": 0.009742
+    },
+    {
+      "name": "XGBoost weighted",
+      "test_ap_ratio": 0.55,
+      "test_ap": 0.000335,
+      "test_roc_auc": 0.1022,
+      "val_ap": 0.015105
+    },
+    {
+      "name": "MLP",
+      "test_ap_ratio": 0.53,
+      "test_ap": 0.000325,
+      "test_roc_auc": 0.1045,
+      "val_ap": 0.068948,
+      "note": "Highest validation AP (0.068948), but collapsed to 0.53x prevalence on test"
+    }
+  ]
+}

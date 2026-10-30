@@ -1,0 +1,55 @@
+{
+  "caveat": "Attribution of a fitted tree model, not physical causation.",
+  "features": [
+    {
+      "feature": "Oil_temperature",
+      "val_event_3_mean_shap": 428.09,
+      "test_event_4_mean_shap": 369.17,
+      "shift": -58.92
+    },
+    {
+      "feature": "TP2",
+      "val_event_3_mean_shap": 114.18,
+      "test_event_4_mean_shap": 103.20,
+      "shift": -10.98
+    },
+    {
+      "feature": "DV_pressure",
+      "val_event_3_mean_shap": 107.84,
+      "test_event_4_mean_shap": 88.54,
+      "shift": -19.30
+    },
+    {
+      "feature": "TP3",
+      "val_event_3_mean_shap": 65.28,
+      "test_event_4_mean_shap": 62.38,
+      "shift": -2.90
+    },
+    {
+      "feature": "Caudal_impulses",
+      "val_event_3_mean_shap": 24.61,
+      "test_event_4_mean_shap": 61.47,
+      "shift": 36.87,
+      "highlight": true,
+      "note": "Largest shift (+36.87): reliance on caudal impulses more than doubles during Event 4"
+    },
+    {
+      "feature": "H1",
+      "val_event_3_mean_shap": 31.76,
+      "test_event_4_mean_shap": 25.00,
+      "shift": -6.76
+    },
+    {
+      "feature": "Reservoirs",
+      "val_event_3_mean_shap": 16.58,
+      "test_event_4_mean_shap": 10.68,
+      "shift": -5.90
+    },
+    {
+      "feature": "Motor_current",
+      "val_event_3_mean_shap": 9.15,
+      "test_event_4_mean_shap": 8.27,
+      "shift": -0.88
+    }
+  ]
+}

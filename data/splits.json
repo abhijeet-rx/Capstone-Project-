@@ -1,0 +1,37 @@
+{
+  "dataset": {
+    "name": "MetroPT-3",
+    "citation": "Veloso et al., Scientific Data, 2022, doi:10.1038/s41597-022-01877-3",
+    "total_samples": 1516948,
+    "total_features": 15,
+    "documented_failures": 4,
+    "evaluated_failures": [3, 4],
+    "sampling_interval_approx_seconds": 10
+  },
+  "temporal_splits": [
+    {
+      "phase": "Training Baseline",
+      "boundary": "Before 2020-05-30 06:00",
+      "purpose": "Healthy baseline calibration and threshold calibration on purely healthy operations"
+    },
+    {
+      "phase": "Validation Window (Event 3)",
+      "boundary": "2020-05-30 06:00 to 2020-06-07 14:30",
+      "purpose": "Workflow selection and tuning on Event 3 onset (2020-06-05 10:00)"
+    },
+    {
+      "phase": "Held-Out Prospective Test (Event 4)",
+      "boundary": "From 2020-06-07 14:30",
+      "purpose": "Strictly held-out future prospective evaluation on Event 4 onset (2020-07-15 14:30)"
+    }
+  ],
+  "health_index": {
+    "components": [
+      { "name": "DV_pressure", "type": "Rolling mean", "weight": 0.2 },
+      { "name": "Motor_current", "type": "Rolling standard deviation", "weight": 0.2 },
+      { "name": "H1", "type": "Rolling mean", "weight": 0.2 },
+      { "name": "Oil_temperature", "type": "Rolling mean", "weight": 0.2 },
+      { "name": "Motor_current", "type": "Rolling mean", "weight": 0.2 }
+    ]
+  }
+}

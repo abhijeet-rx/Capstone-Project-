@@ -1,0 +1,36 @@
+{
+  "event_4_comparisons": [
+    {
+      "method": "Proposed Health Index (Q99, P=3)",
+      "lead_time_hours": 15.84,
+      "lead_time_display": "15.84 h",
+      "alarm_episodes": 48,
+      "fwr_percent": 0.4587,
+      "notes": "Low operational burden; also successfully warns on Event 3 (23.75 h lead, 12 episodes)"
+    },
+    {
+      "method": "Temporal Extra Trees",
+      "lead_time_hours": 10.0,
+      "lead_time_display": "~10.0 h",
+      "alarm_episodes": 529,
+      "fwr_percent": null,
+      "notes": "Over 11x more alarm episodes; heavy operational maintenance burden"
+    },
+    {
+      "method": "Temporal XGBoost (unweighted)",
+      "lead_time_hours": 9.8,
+      "lead_time_display": "~9.8 h",
+      "alarm_episodes": 1197,
+      "fwr_percent": null,
+      "notes": "Nearly 25x more alarm episodes; causes severe alarm fatigue"
+    },
+    {
+      "method": "PCA Baseline",
+      "lead_time_hours": 17.03,
+      "lead_time_display": "17.03 h",
+      "alarm_episodes": null,
+      "fwr_percent": null,
+      "notes": "Slightly longer lead on Event 4, but completely misses Event 3 entirely"
+    }
+  ]
+}
