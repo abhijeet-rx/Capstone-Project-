@@ -1,0 +1,23 @@
+{
+  "system": "Railway Air Production Unit (APU)",
+  "dataset": "MetroPT-3",
+  "physical_sensors": [
+    { "id": "TP2", "name": "Compressor Pressure", "description": "Pressure measurement at compressor output", "unit": "bar" },
+    { "id": "TP3", "name": "System Pressure", "description": "Pneumatic circuit pressure measurement", "unit": "bar" },
+    { "id": "H1", "name": "Purge/Vent Pressure", "description": "Pressure-related measurement at air dryer / purge line", "unit": "bar" },
+    { "id": "DV_pressure", "name": "Discharge Valve Pressure", "description": "Pressure at discharge valve assembly", "unit": "bar" },
+    { "id": "Reservoirs", "name": "Reservoir Pressure", "description": "Main pneumatic air storage reservoir pressure", "unit": "bar" },
+    { "id": "Oil_temperature", "name": "Oil Temperature", "description": "Compressor lubricating oil temperature", "unit": "°C" },
+    { "id": "Motor_current", "name": "Motor Current", "description": "Electrical current drawn by the compressor drive motor", "unit": "A" }
+  ],
+  "digital_and_operational_signals": [
+    { "id": "COMP", "name": "Compressor State", "description": "Digital control command signal indicating active compressor cycling" },
+    { "id": "DV_eletric", "name": "Electric Discharge Valve", "description": "Solenoid actuation signal for pneumatic discharge valve" },
+    { "id": "Towers", "name": "Desiccant Towers", "description": "Air dryer regeneration cycle tower state" },
+    { "id": "MPG", "name": "Main Pressure Gauge", "description": "Pneumatic line status flag" },
+    { "id": "LPS", "name": "Low Pressure Switch", "description": "Emergency low-pressure interlock signal" },
+    { "id": "Pressure_switch", "name": "Pressure Switch", "description": "Governor switch triggering compressor start/stop cycle" },
+    { "id": "Oil_level", "name": "Oil Level", "description": "Reservoir lubricant level indicator" },
+    { "id": "Caudal_impulses", "name": "Caudal Flow Impulses", "description": "Pulse flow rate sensor measuring compressed air volume discharge" }
+  ]
+}

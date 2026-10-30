@@ -1,91 +1,117 @@
 {
   "test_prevalence_baseline": 0.000611,
+  "test_prevalence_percentage": "0.0611%",
   "models": [
     {
       "name": "Isolation Forest",
+      "category": "Unsupervised Anomaly Detection",
       "test_ap_ratio": 4.75,
       "test_ap": 0.002902,
-      "test_roc_auc": 0.8944,
       "val_ap": 0.013034,
-      "note": "Best ranking score (4.75x prevalence), but produced no qualifying persistent warning at evaluated threshold"
+      "val_roc_auc": 0.5515,
+      "test_roc_auc": 0.8944,
+      "note": "Highest ranking score (~4.75x prevalence, test ROC-AUC 0.8944), but produced zero qualifying persistent warnings under evaluated operational threshold."
     },
     {
-      "name": "Stacked AE",
+      "name": "Stacked Autoencoder",
+      "category": "Unsupervised Deep Learning",
       "test_ap_ratio": 2.03,
       "test_ap": 0.001238,
-      "test_roc_auc": 0.7587,
-      "val_ap": 0.011198
+      "val_ap": 0.011198,
+      "val_roc_auc": 0.5510,
+      "test_roc_auc": 0.7587
     },
     {
       "name": "Autoencoder",
+      "category": "Unsupervised Deep Learning",
       "test_ap_ratio": 1.65,
       "test_ap": 0.001009,
-      "test_roc_auc": 0.7131,
-      "val_ap": 0.010503
+      "val_ap": 0.010503,
+      "val_roc_auc": 0.5573,
+      "test_roc_auc": 0.7131
     },
     {
       "name": "Logistic Regression",
+      "category": "Traditional Supervised ML",
       "test_ap_ratio": 1.21,
       "test_ap": 0.000742,
-      "test_roc_auc": 0.4951,
-      "val_ap": 0.089931
+      "val_ap": 0.089931,
+      "val_roc_auc": 0.5444,
+      "test_roc_auc": 0.4951
     },
     {
       "name": "Linear SVM",
+      "category": "Traditional Supervised ML",
       "test_ap_ratio": 1.18,
       "test_ap": 0.000723,
-      "test_roc_auc": 0.5462,
-      "val_ap": 0.027989
+      "val_ap": 0.027989,
+      "val_roc_auc": 0.4903,
+      "test_roc_auc": 0.5462
     },
     {
       "name": "Extra Trees",
+      "category": "Tree-based ML",
       "test_ap_ratio": 0.74,
       "test_ap": 0.000453,
+      "val_ap": 0.107630,
+      "val_roc_auc": 0.6074,
       "test_roc_auc": 0.3753,
-      "val_ap": 0.107630
+      "note": "Achieved highest validation AP (0.107630), but collapsed to 0.74x prevalence on held-out test data."
     },
     {
       "name": "1D-CNN (L=10)",
+      "category": "Deep Learning",
       "test_ap_ratio": 0.72,
       "test_ap": 0.000442,
-      "test_roc_auc": 0.3623,
-      "val_ap": 0.056820
+      "val_ap": 0.056820,
+      "val_roc_auc": 0.5970,
+      "test_roc_auc": 0.3623
     },
     {
       "name": "LSTM (L=10)",
+      "category": "Deep Learning",
       "test_ap_ratio": 0.71,
       "test_ap": 0.000432,
-      "test_roc_auc": 0.2763,
-      "val_ap": 0.054687
+      "val_ap": 0.054687,
+      "val_roc_auc": 0.5712,
+      "test_roc_auc": 0.2763
     },
     {
       "name": "LightGBM",
+      "category": "Tree-based ML",
       "test_ap_ratio": 0.64,
       "test_ap": 0.000392,
-      "test_roc_auc": 0.2081,
-      "val_ap": 0.027180
+      "val_ap": 0.027180,
+      "val_roc_auc": 0.6343,
+      "test_roc_auc": 0.2081
     },
     {
       "name": "Random Forest",
+      "category": "Tree-based ML",
       "test_ap_ratio": 0.63,
       "test_ap": 0.000385,
-      "test_roc_auc": 0.2187,
-      "val_ap": 0.009742
+      "val_ap": 0.009742,
+      "val_roc_auc": 0.6133,
+      "test_roc_auc": 0.2187
     },
     {
-      "name": "XGBoost weighted",
+      "name": "XGBoost (Weighted)",
+      "category": "Tree-based ML",
       "test_ap_ratio": 0.55,
       "test_ap": 0.000335,
-      "test_roc_auc": 0.1022,
-      "val_ap": 0.015105
+      "val_ap": 0.015105,
+      "val_roc_auc": 0.5802,
+      "test_roc_auc": 0.1022
     },
     {
       "name": "MLP",
+      "category": "Deep Learning",
       "test_ap_ratio": 0.53,
       "test_ap": 0.000325,
-      "test_roc_auc": 0.1045,
       "val_ap": 0.068948,
-      "note": "Highest validation AP (0.068948), but collapsed to 0.53x prevalence on test"
+      "val_roc_auc": 0.7503,
+      "test_roc_auc": 0.1045,
+      "note": "High validation AP (0.068948) and val ROC-AUC (0.7503), but collapsed to 0.53x prevalence on test."
     }
   ]
 }

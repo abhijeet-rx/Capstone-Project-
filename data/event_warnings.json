@@ -1,0 +1,125 @@
+{
+  "description": "Event-level early warning detection performance across model configurations",
+  "models": [
+    {
+      "model": "Proposed Hierarchical HI (Q99, P=3)",
+      "category": "Health Index",
+      "event_3_detected": true,
+      "event_3_lead_hours": 23.75,
+      "event_4_detected": true,
+      "event_4_lead_hours": 15.84,
+      "alarm_episodes": 48,
+      "notes": "Reliably detects both failures with low false-alarm operational burden."
+    },
+    {
+      "model": "Extra Trees Temporal",
+      "category": "Tree-based ML",
+      "event_3_detected": true,
+      "event_3_lead_hours": 8.88,
+      "event_4_detected": true,
+      "event_4_lead_hours": 10.00,
+      "alarm_episodes": 529,
+      "notes": "Generates 10 h lead on Event 4, but creates 529 false alarm episodes."
+    },
+    {
+      "model": "XGBoost Unweighted Temporal",
+      "category": "Tree-based ML",
+      "event_3_detected": false,
+      "event_3_lead_hours": null,
+      "event_4_detected": true,
+      "event_4_lead_hours": 9.80,
+      "alarm_episodes": 1197,
+      "notes": "Misses Event 3 entirely; produces 1,197 false-alarm episodes (severe fatigue)."
+    },
+    {
+      "model": "Logistic Regression Raw",
+      "category": "Supervised Linear",
+      "event_3_detected": true,
+      "event_3_lead_hours": 0.16,
+      "event_4_detected": true,
+      "event_4_lead_hours": 11.89,
+      "alarm_episodes": null,
+      "notes": "Near-zero advance warning on Event 3 (0.16 h)."
+    },
+    {
+      "model": "1D-CNN Raw (L=10)",
+      "category": "Deep Learning",
+      "event_3_detected": true,
+      "event_3_lead_hours": 11.07,
+      "event_4_detected": true,
+      "event_4_lead_hours": 11.53,
+      "alarm_episodes": null,
+      "notes": "Detects both events with ~11 h lead, but suffers high false alarms at nominal thresholds."
+    },
+    {
+      "model": "Linear SVM Raw",
+      "category": "Supervised Linear",
+      "event_3_detected": true,
+      "event_3_lead_hours": 8.96,
+      "event_4_detected": true,
+      "event_4_lead_hours": 0.76,
+      "alarm_episodes": null,
+      "notes": "Only 45 minutes lead time on Event 4."
+    },
+    {
+      "model": "Extra Trees Raw",
+      "category": "Tree-based ML",
+      "event_3_detected": true,
+      "event_3_lead_hours": 4.05,
+      "event_4_detected": false,
+      "event_4_lead_hours": null,
+      "alarm_episodes": null,
+      "notes": "Completely misses prospective Event 4."
+    },
+    {
+      "model": "LightGBM Raw",
+      "category": "Tree-based ML",
+      "event_3_detected": true,
+      "event_3_lead_hours": 3.02,
+      "event_4_detected": false,
+      "event_4_lead_hours": null,
+      "alarm_episodes": null,
+      "notes": "Completely misses prospective Event 4."
+    },
+    {
+      "model": "XGBoost Weighted Raw",
+      "category": "Tree-based ML",
+      "event_3_detected": true,
+      "event_3_lead_hours": 0.03,
+      "event_4_detected": false,
+      "event_4_lead_hours": null,
+      "alarm_episodes": null,
+      "notes": "Misses Event 4; negligible lead on Event 3 (0.03 h)."
+    },
+    {
+      "model": "Random Forest Raw",
+      "category": "Tree-based ML",
+      "event_3_detected": false,
+      "event_3_lead_hours": null,
+      "event_4_detected": false,
+      "event_4_lead_hours": null,
+      "alarm_episodes": null,
+      "notes": "Fails to detect either Event 3 or Event 4 under evaluated persistence."
+    },
+    {
+      "model": "Isolation Forest Raw",
+      "category": "Anomaly Detection",
+      "event_3_detected": false,
+      "event_3_lead_hours": null,
+      "event_4_detected": false,
+      "event_4_lead_hours": null,
+      "alarm_episodes": null,
+      "notes": "Achieved highest test ranking (4.75x AP ratio) but raised ZERO qualifying persistent alarms."
+    },
+    {
+      "model": "LSTM Raw (L=10)",
+      "category": "Deep Learning",
+      "event_3_detected": true,
+      "event_3_lead_hours": 0.14,
+      "event_4_detected": false,
+      "event_4_lead_hours": null,
+      "alarm_episodes": null,
+      "notes": "Misses Event 4 entirely."
+    }
+  ]
+}
